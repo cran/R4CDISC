@@ -1,13 +1,13 @@
-read.untyped.sds <-
-    function( sds_file, define_file ){      
-        doc = xmlTreeParse(sds_file, useInternalNodes = T)
+read.dataset.xml <-
+    function( dataset_xml, define_xml ){      
+        doc = xmlTreeParse(dataset_xml, useInternalNodes = T)
         sds <- getSDS( doc )
         ItemGroupOID <- sds$IGOID
         df <- sds$sdsdata
         
                 
         # set variable order    
-        variable.metadata <- getVarMD( define_file )
+        variable.metadata <- getVarMD( define_xml )
         variable.metadata_ <- subset(variable.metadata, 
                                  variable.metadata$IGD_Name == unlist( strsplit(ItemGroupOID, "[.]" ))[2]
                                  #select = c( ID_Name, IR_OrderNumber )
