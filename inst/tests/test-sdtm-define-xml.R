@@ -3,7 +3,8 @@ library(testthat)
 
 
 ## Test metadata preparation 
-define <- system.file("extdata", 
+define <- system.file("extdata",
+                      "SDTM",
                       "define2-0-0-example-sdtm(2013-11-09).xml", 
                       package="R4CDISC") 
 
@@ -16,6 +17,8 @@ variable.metadata <- getVarMD(define)
 #Get value level metadata
 value.metadata <- getValMD(define)
 
+#Get Controlled Terminology
+ct.metadata <- getCT(define)
 
 # Excute unit tests for import metadata
 
@@ -48,3 +51,16 @@ test_that("chech an imported value", {
   expect_equal(variable.metadata[variable.metadata$IR_ItemOID=="IT.SE.SESEQ","IR_OrderNumber"], 4 )
   expect_equal(value.metadata[value.metadata$IR_ItemOID=="IT.EG.EGORRES.QRSDUR","IR_OrderNumber"], 3)
 })
+
+
+# Check code list value 
+test_that("check the controlled terminology", {
+    expect_equal(length(ct.metadata), 85 )
+    expect_equal(ct.metadata[[50]]$CodeList.OID, "CL.PE.DOMAIN")
+    expect_equal(ct.metadata[[30]]$CodeList.Alias, "C71113")
+    expect_equal(ct.metadata[[80]]$item.Decode[[2]], "Centimeter")
+})
+
+
+
+
